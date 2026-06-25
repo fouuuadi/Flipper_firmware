@@ -115,9 +115,9 @@ void setup() {
   plunger.begin();
 
   bindButton(flipperLeft, "L1");
-  bindButton(flipperRight, "R1");
+  bindButton(flipperRight, "R2");
   bindButton(navLeft, "L2");
-  bindButton(navRight, "R2");
+  bindButton(navRight, "R1");
   bindButton(frontTop, "top");
   bindButton(frontMiddle, "middle");
   bindButton(frontBottom, "bottom");

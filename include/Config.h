@@ -10,9 +10,9 @@
 //
 //   id publié | GPIO | bouton physique        | rôle (décidé par le back)
 #define PIN_FLIPPER_LEFT 4    // "L1"  | white left   | flipper gauche
-#define PIN_FLIPPER_RIGHT 13  // "R1"  | black right  | flipper droit
+#define PIN_FLIPPER_RIGHT 25  // "R2"  | white right  | flipper droit
 #define PIN_NAV_LEFT 16       // "L2"  | black left   | navigation gauche
-#define PIN_NAV_RIGHT 25      // "R2"  | white right  | navigation droite
+#define PIN_NAV_RIGHT 13      // "R1"  | black right  | navigation droite
 #define PIN_FRONT_TOP 17      // "top"    | vert      | valider / start
 #define PIN_FRONT_MIDDLE 18   // "middle" | jaune     | secondaire
 #define PIN_FRONT_BOTTOM 19   // "bottom" | rouge     | retour / pause

@@ -30,9 +30,9 @@ Publié sur le broker partagé (le même que celui que le backend écoute) :
 | `id` | GPIO | Bouton | Rôle (backend) |
 |---|---|---|---|
 | `L1` | 4 | white left | flipper gauche |
-| `R1` | 13 | black right | flipper droit |
+| `R1` | 13 | black right | navigation droite |
 | `L2` | 16 | black left | navigation gauche |
-| `R2` | 25 | white right | navigation droite |
+| `R2` | 25 | white right | flipper droit |
 | `top` | 17 | vert | valider / start |
 | `middle` | 18 | jaune | secondaire |
 | `bottom` | 19 | rouge | retour / pause |
