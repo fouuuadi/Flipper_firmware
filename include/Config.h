@@ -20,6 +20,8 @@
 #define PIN_PLUNGER 32        // plunger  | lanceur
 
 // --- Timings --------------------------------------------------------------
+// 50 ms : compromis classique — assez long pour absorber le rebond mécanique du
+// contact, assez court pour rester imperceptible (un flipper doit sembler instantané).
 #define BUTTON_DEBOUNCE_MS 50
 
 // --- Topics MQTT (contrat back ↔ firmware) --------------------------------

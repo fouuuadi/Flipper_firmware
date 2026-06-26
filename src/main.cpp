@@ -27,6 +27,8 @@ void publishButton(const char *id, int state) {
   doc["id"] = id;
   doc["state"] = state;
   doc["ts"] = millis();
+  // Buffer fixe sur la pile (pas de String) : sur microcontrôleur on évite les
+  // allocations dynamiques qui fragmentent le tas sur une boucle longue durée.
   char buf[96];
   const size_t n = serializeJson(doc, buf);
   mqtt.publish(TOPIC_BUTTON, reinterpret_cast<const uint8_t *>(buf), n);
@@ -130,9 +132,11 @@ void setup() {
 }
 
 void loop() {
+  // Auto-reconnexion en tête de boucle : la borne tourne en continu, le WiFi ou
+  // le broker peuvent tomber — on rétablit le lien avant de lire les boutons.
   if (WiFi.status() != WL_CONNECTED) connectWifi();
   if (!mqtt.connected()) connectMqtt();
-  mqtt.loop();
+  mqtt.loop();  // indispensable : entretient la connexion MQTT (keepalive, I/O)
 
   flipperLeft.update();
   flipperRight.update();
