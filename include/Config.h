@@ -25,7 +25,6 @@
 // --- Topics MQTT (contrat back ↔ firmware) --------------------------------
 #define TOPIC_BUTTON "pinball/" DEVICE_ID "/input/button"
 #define TOPIC_PLUNGER "pinball/" DEVICE_ID "/input/plunger"
-#define TOPIC_STATUS "pinball/" DEVICE_ID "/esp32/status"
 
 // Tentatives de (re)connexion WiFi avant d'abandonner (0 = illimité).
 #define WIFI_MAX_CONNECTION_RETRY 0
