@@ -1,8 +1,26 @@
 #pragma once
 
 // Constantes matérielles du firmware (pins, timings, topics). La config qui
-// varie selon l'environnement (WiFi, broker, DEVICE_ID) est injectée par
-// variables d'environnement via build_flags (cf. platformio.ini) — rien en dur.
+// varie selon l'environnement (WiFi, broker, DEVICE_ID) est fournie par
+// build_flags (cf. platformio.ini) : injectée par variables d'environnement en
+// profil `dev`, en dur (valeurs non secrètes) en profil `prod`.
+
+// WIFI_PASSWORD vient de la CI (secret GitHub WIFI_PASS). Fallback vide pour un
+// build local sans secret : ça compile, mais le WiFi ne se connecte pas.
+#ifndef WIFI_PASSWORD
+#define WIFI_PASSWORD ""
+#endif
+
+// MQTT_BROKER_HOST optionnel : vide → le firmware vise la passerelle WiFi (la
+// borne, qui héberge l'AP FLIPHETIC_CAB0). cf. connectMqtt() dans main.cpp.
+#ifndef MQTT_BROKER_HOST
+#define MQTT_BROKER_HOST ""
+#endif
+
+// Baud du port série, aligné sur `monitor_speed` du profil (cf. platformio.ini).
+#ifndef SERIAL_BAUD
+#define SERIAL_BAUD 921600
+#endif
 
 // --- Mapping boutons → GPIO (ESP32) ---------------------------------------
 // L'`id` publié sur MQTT est interprété côté backend (cf. contrat). Le firmware

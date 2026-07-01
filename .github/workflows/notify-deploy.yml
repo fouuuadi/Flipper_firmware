@@ -1,0 +1,31 @@
+name: Notify deploy to rebuild firmware
+
+# Ce repo est la SOURCE unique du firmware. Il ne build pas le binaire lui-même :
+# à chaque push touchant les sources, il prévient flipper-deploy (repository_dispatch),
+# qui clone ce repo, compile le profil `prod`, et committe firmware/build/firmware.bin.
+# La borne (Fliphetic) flashe ce binaire au prochain Load.
+#
+# Prérequis : le secret DEPLOY_DISPATCH_TOKEN (PAT avec accès à flipper-deploy),
+# car le GITHUB_TOKEN par défaut ne peut pas déclencher un workflow dans un autre repo.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "include/**"
+      - "lib/**"
+      - "platformio.ini"
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger firmware rebuild on flipper-deploy
+        env:
+          GH_TOKEN: ${{ secrets.DEPLOY_DISPATCH_TOKEN }}
+        run: |
+          gh api repos/fouuuadi/flipper-deploy/dispatches \
+            -f event_type=firmware-updated \
+            -f 'client_payload[sha]=${{ github.sha }}'
