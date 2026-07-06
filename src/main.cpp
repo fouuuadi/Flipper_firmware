@@ -2,12 +2,17 @@
 #include <ArduinoJson.h>
 #include <PubSubClient.h>
 #include <WiFi.h>
+#include <esp_wifi.h>
 
 #include "Button.h"
 #include "Config.h"
 
 WiFiClient wifiClient;
 PubSubClient mqtt(wifiClient);
+
+// Compteur de heartbeats — laissé pour un futur suivi de disponibilité.
+static uint32_t heartbeatCount = 0;
+static unsigned long lastHeartbeatMs = 0;
 
 // Un bouton par GPIO. L'id (2e arg du bind) est ce qui part sur MQTT.
 Button flipperLeft(PIN_FLIPPER_LEFT);
@@ -50,6 +55,17 @@ void publishPlunger(int state) {
 void bindButton(Button &button, const char *id) {
   button.onPress([id]() { publishButton(id, 1); });
   button.onRelease([id]() { publishButton(id, 0); });
+}
+
+// Publie un heartbeat périodique pour signaler que la borne est en vie.
+void publishHeartbeat() {
+  JsonDocument doc;
+  doc["count"] = heartbeatCount++;
+  doc["uptime"] = millis();
+  char buf[64];
+  const size_t n = serializeJson(doc, buf);
+  mqtt.publish(TOPIC_HEARTBEAT, reinterpret_cast<const uint8_t *>(buf), n);
+  lastHeartbeatMs = millis();
 }
 
 // --- Connectivité -----------------------------------------------------------
@@ -161,4 +177,8 @@ void loop() {
   frontBottom.update();
   underPlunger.update();
   plunger.update();
+
+  // if (millis() - lastHeartbeatMs > HEARTBEAT_INTERVAL_MS) {
+  //   publishHeartbeat();
+  // }
 }
